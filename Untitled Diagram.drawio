@@ -71,13 +71,13 @@
           <mxGeometry height="60" width="120" y="30" as="geometry" />
         </mxCell>
         <mxCell id="rzHLkssU3trbFiayosw--44" parent="rzHLkssU3trbFiayosw--21" style="rounded=0;whiteSpace=wrap;html=1;" value="Generate Alert if Risk&amp;gt;70" vertex="1">
-          <mxGeometry height="60" width="120" y="150" as="geometry" />
+          <mxGeometry height="60" width="120" y="110" as="geometry" />
         </mxCell>
         <mxCell id="rzHLkssU3trbFiayosw--45" parent="rzHLkssU3trbFiayosw--21" style="rounded=0;whiteSpace=wrap;html=1;" value="Log Audit Trail" vertex="1">
-          <mxGeometry height="60" width="120" y="250" as="geometry" />
+          <mxGeometry height="60" width="120" y="220" as="geometry" />
         </mxCell>
         <mxCell id="rzHLkssU3trbFiayosw--46" parent="rzHLkssU3trbFiayosw--21" style="rounded=0;whiteSpace=wrap;html=1;" value="Update BI Dashboard" vertex="1">
-          <mxGeometry height="60" width="120" y="360" as="geometry" />
+          <mxGeometry height="60" width="120" y="310" as="geometry" />
         </mxCell>
         <mxCell id="rzHLkssU3trbFiayosw--22" edge="1" parent="1" source="rzHLkssU3trbFiayosw--18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0.139;entryY=-0.003;entryDx=0;entryDy=0;entryPerimeter=0;" target="rzHLkssU3trbFiayosw--19">
           <mxGeometry relative="1" as="geometry" />
