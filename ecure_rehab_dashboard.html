@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SecureRehab Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* Base Styles */
+      :root {
+        --primary: #2c3e50;
+        --secondary: #3498db;
+        --success: #2ecc71;
+        --warning: #f39c12;
+        --danger: #e74c3c;
+        --light: #ecf0f1;
+        --dark: #2c3e50;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        color: #333;
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* Header */
+      .header {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-icon {
+        font-size: 2.5em;
+        color: var(--secondary);
+      }
+
+      .logo-text h1 {
+        font-size: 1.8em;
+        color: var(--primary);
+        margin-bottom: 5px;
+      }
+
+      .logo-text p {
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      .student-info {
+        text-align: right;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid var(--secondary);
+      }
+
+      .student-info h3 {
+        color: var(--primary);
+        margin-bottom: 10px;
+      }
+
+      /* Stats Cards */
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border-top: 5px solid var(--secondary);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-icon {
+        font-size: 2.5em;
+        color: var(--secondary);
+        margin-bottom: 15px;
+      }
+
+      .stat-value {
+        font-size: 2.8em;
+        font-weight: bold;
+        color: var(--primary);
+        margin: 10px 0;
+      }
+
+      .stat-label {
+        color: #666;
+        font-size: 1em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Main Content */
+      .content {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 30px;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        height: fit-content;
+      }
+
+      .sidebar h3 {
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #eee;
+      }
+
+      .nav-menu {
+        list-style: none;
+      }
+
+      .nav-item {
+        margin-bottom: 10px;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border-radius: 10px;
+        color: #555;
+        text-decoration: none;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+
+      .nav-link:hover {
+        background: #f8f9fa;
+        color: var(--secondary);
+      }
+
+      .nav-link.active {
+        background: var(--secondary);
+        color: white;
+      }
+
+      .nav-icon {
+        font-size: 1.2em;
+        width: 24px;
+        text-align: center;
+      }
+
+      /* Main Panel */
+      .main-panel {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        min-height: 600px;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .section-title {
+        color: var(--primary);
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Tables */
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .data-table th {
+        background: #f8f9fa;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        color: var(--primary);
+        border-bottom: 2px solid #eee;
+      }
+
+      .data-table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .data-table tr:hover {
+        background: #f8f9fa;
+      }
+
+      /* Status Indicators */
+      .risk-low {
+        color: var(--success);
+        font-weight: 600;
+      }
+
+      .risk-medium {
+        color: var(--warning);
+        font-weight: 600;
+      }
+
+      .risk-high {
+        color: var(--danger);
+        font-weight: 600;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        font-weight: 600;
+      }
+
+      .status-active {
+        background: #d5f4e6;
+        color: var(--success);
+      }
+
+      .status-released {
+        background: #d6eaf8;
+        color: var(--secondary);
+      }
+
+      /* Forms */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border 0.3s;
+      }
+
+      .form-control:focus {
+        border-color: var(--secondary);
+        outline: none;
+      }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: var(--secondary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+      }
+
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+
+      /* Alert Messages */
+      .alert {
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        display: none;
+      }
+
+      .alert-success {
+        background: #d5f4e6;
+        color: var(--success);
+        border-left: 4px solid var(--success);
+      }
+
+      .alert-info {
+        background: #d6eaf8;
+        color: var(--secondary);
+        border-left: 4px solid var(--secondary);
+      }
+
+      /* Footer */
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        color: #666;
+        font-size: 0.9em;
+      }
+
+      /* Responsive */
+      @media (max-width: 1024px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          order: 2;
+        }
+
+        .main-panel {
+          order: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header {
+          flex-direction: column;
+          text-align: center;
+          gap: 20px;
+        }
+
+        .student-info {
+          text-align: center;
+        }
+
+        .stats-container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="logo-text">
+            <h1>SecureRehab Dashboard</h1>
+            <p>Security-Focused Criminal Rehabilitation System</p>
+          </div>
+        </div>
+
+        <div class="student-info">
+          <h3>PL/SQL Capstone Project</h3>
+          <p><strong>Student:</strong> Umwizerwa Ruth</p>
+          <p><strong>ID:</strong> 28235 | <strong>Group:</strong> D</p>
+          <p><strong>Instructor:</strong> Mr. Eric Maniraguha</p>
+          <p><strong>AUCA</strong> - December 2025</p>
+        </div>
+      </header>
+
+      <!-- Statistics Cards -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-value">150</div>
+          <div class="stat-label">Total Offenders</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="stat-value">23</div>
+          <div class="stat-label">High Risk Offenders</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-value">89</div>
+          <div class="stat-label">In Rehabilitation</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-door-open"></i>
+          </div>
+          <div class="stat-value">12</div>
+          <div class="stat-label">Eligible for Release</div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <h3>Navigation</h3>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a class="nav-link active" data-tab="dashboard">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="offenders">
+                <i class="nav-icon fas fa-user-injured"></i>
+                Offenders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="programs">
+                <i class="nav-icon fas fa-hands-helping"></i>
+                Programs
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="reports">
+                <i class="nav-icon fas fa-chart-bar"></i>
+                Reports
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="add">
+                <i class="nav-icon fas fa-user-plus"></i>
+                Add Offender
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="alerts">
+                <i class="nav-icon fas fa-bell"></i>
+                Alerts
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-tab="database">
+                <i class="nav-icon fas fa-database"></i>
+                Database Info
+              </a>
+            </li>
+          </ul>
+
+          <div
+            style="
+              margin-top: 30px;
+              padding: 20px;
+              background: #f8f9fa;
+              border-radius: 10px;
+            "
+          >
+            <h4>PL/SQL Features</h4>
+            <ul style="list-style: none; margin-top: 10px">
+              <li style="margin-bottom: 8px">
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                Cursors
+              </li>
+              <li style="margin-bottom: 8px">
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                Triggers
+              </li>
+              <li style="margin-bottom: 8px">
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                Procedures
+              </li>
+              <li style="margin-bottom: 8px">
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                Functions
+              </li>
+              <li>
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                PDB Database
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main Panel -->
+        <main class="main-panel">
+          <!-- Dashboard Tab -->
+          <div class="tab-content active" id="dashboard-tab">
+            <h2 class="section-title">
+              <span>System Overview</span>
+              <button class="btn btn-primary" onclick="runDemoProcedure()">
+                <i class="fas fa-play-circle"></i> Run Demo
+              </button>
+            </h2>
+
+            <div class="alert alert-info" id="demoAlert">
+              <strong><i class="fas fa-info-circle"></i> Demo Mode:</strong>
+              This UI simulates interaction with the PL/SQL database.
+            </div>
+
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 25px;
+                margin-top: 20px;
+              "
+            >
+              <div>
+                <h3>Risk Distribution</h3>
+                <div style="margin-top: 15px">
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin-bottom: 8px;
+                    "
+                  >
+                    <span>Low Risk (0-0.3)</span>
+                    <span class="risk-low">45 offenders</span>
+                  </div>
+                  <div
+                    style="
+                      height: 10px;
+                      background: #e8f5e9;
+                      border-radius: 5px;
+                      overflow: hidden;
+                    "
+                  >
+                    <div
+                      style="
+                        height: 100%;
+                        width: 30%;
+                        background: var(--success);
+                      "
+                    ></div>
+                  </div>
+
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 15px 0 8px;
+                    "
+                  >
+                    <span>Medium Risk (0.4-0.6)</span>
+                    <span class="risk-medium">82 offenders</span>
+                  </div>
+                  <div
+                    style="
+                      height: 10px;
+                      background: #fff3e0;
+                      border-radius: 5px;
+                      overflow: hidden;
+                    "
+                  >
+                    <div
+                      style="
+                        height: 100%;
+                        width: 55%;
+                        background: var(--warning);
+                      "
+                    ></div>
+                  </div>
+
+                  <div
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      margin: 15px 0 8px;
+                    "
+                  >
+                    <span>High Risk (0.7-1.0)</span>
+                    <span class="risk-high">23 offenders</span>
+                  </div>
+                  <div
+                    style="
+                      height: 10px;
+                      background: #ffebee;
+                      border-radius: 5px;
+                      overflow: hidden;
+                    "
+                  >
+                    <div
+                      style="
+                        height: 100%;
+                        width: 15%;
+                        background: var(--danger);
+                      "
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3>Quick Actions</h3>
+                <div
+                  style="
+                    margin-top: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                  "
+                >
+                  <button class="btn btn-primary" onclick="showTab('reports')">
+                    <i class="fas fa-chart-line"></i> Generate Risk Report
+                  </button>
+                  <button class="btn btn-success" onclick="showTab('add')">
+                    <i class="fas fa-user-plus"></i> Add New Offender
+                  </button>
+                  <button
+                    class="btn"
+                    style="background: #9b59b6; color: white"
+                    onclick="showTab('alerts')"
+                  >
+                    <i class="fas fa-bell"></i> View System Alerts
+                  </button>
+                  <button
+                    class="btn"
+                    style="background: #1abc9c; color: white"
+                    onclick="showTab('database')"
+                  >
+                    <i class="fas fa-database"></i> Show PDB Info
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px">Recent Activity</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Action</th>
+                  <th>User</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>10:30 AM</td>
+                  <td>Risk Score Updated</td>
+                  <td>System</td>
+                  <td>Offender #1004: 0.85 → 0.82</td>
+                </tr>
+                <tr>
+                  <td>09:15 AM</td>
+                  <td>Program Enrollment</td>
+                  <td>Officer Smith</td>
+                  <td>Offender #1002 → Anger Management</td>
+                </tr>
+                <tr>
+                  <td>Yesterday</td>
+                  <td>Early Release Approved</td>
+                  <td>Parole Board</td>
+                  <td>Offender #1001 released (HIGHLY_ELIGIBLE)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Offenders Tab -->
+          <div class="tab-content" id="offenders-tab">
+            <h2 class="section-title">
+              <span>Offender Management</span>
+              <button class="btn btn-primary" onclick="runRiskReviewReport()">
+                <i class="fas fa-sync-alt"></i> Run Cursor Procedure
+              </button>
+            </h2>
+
+            <div
+              class="alert alert-success"
+              id="cursorAlert"
+              style="display: none"
+            >
+              <strong
+                ><i class="fas fa-check-circle"></i> Cursor Procedure
+                Executed:</strong
+              >
+              <span id="cursorResult"></span>
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Risk Score</th>
+                  <th>Status</th>
+                  <th>Programs</th>
+                  <th>Eligibility</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="offendersTable">
+                <!-- Filled by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Programs Tab -->
+          <div class="tab-content" id="programs-tab">
+            <h2 class="section-title">
+              <span>Rehabilitation Programs</span>
+              <button
+                class="btn btn-primary"
+                onclick="testEnrollmentProcedure()"
+              >
+                <i class="fas fa-user-check"></i> Test Enrollment
+              </button>
+            </h2>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Program ID</th>
+                  <th>Program Name</th>
+                  <th>Capacity</th>
+                  <th>Enrolled</th>
+                  <th>Available</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>101</td>
+                  <td>Vocational Training</td>
+                  <td>50</td>
+                  <td>45</td>
+                  <td class="risk-low">5</td>
+                  <td>
+                    <span class="status-badge status-active">Available</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>102</td>
+                  <td>Anger Management</td>
+                  <td>30</td>
+                  <td>38</td>
+                  <td class="risk-high">-8</td>
+                  <td>
+                    <span
+                      class="status-badge"
+                      style="background: #ffebee; color: var(--danger)"
+                      >Full</span
+                    >
+                  </td>
+                </tr>
+                <tr>
+                  <td>103</td>
+                  <td>Adult Literacy</td>
+                  <td>40</td>
+                  <td>32</td>
+                  <td class="risk-low">8</td>
+                  <td>
+                    <span class="status-badge status-active">Available</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>104</td>
+                  <td>Drug Rehabilitation</td>
+                  <td>25</td>
+                  <td>24</td>
+                  <td class="risk-medium">1</td>
+                  <td>
+                    <span
+                      class="status-badge"
+                      style="background: #fff3e0; color: var(--warning)"
+                      >Limited</span
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div
+              style="
+                margin-top: 30px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+              "
+            >
+              <h3>Program Statistics</h3>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                  gap: 20px;
+                  margin-top: 15px;
+                "
+              >
+                <div>
+                  <h4>Completion Rate</h4>
+                  <div class="stat-value">67.5%</div>
+                  <p>Average across all programs</p>
+                </div>
+                <div>
+                  <h4>Most Effective</h4>
+                  <div class="stat-value">Adult Literacy</div>
+                  <p>87.5% completion rate</p>
+                </div>
+                <div>
+                  <h4>Total Enrollments</h4>
+                  <div class="stat-value">139</div>
+                  <p>Active participants</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reports Tab -->
+          <div class="tab-content" id="reports-tab">
+            <h2 class="section-title">
+              <span>Analytics & Reports</span>
+              <button
+                class="btn btn-primary"
+                onclick="generateAnalyticsReport()"
+              >
+                <i class="fas fa-file-export"></i> Generate Report
+              </button>
+            </h2>
+
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+                margin-top: 20px;
+              "
+            >
+              <div
+                style="background: #f8f9fa; padding: 20px; border-radius: 10px"
+              >
+                <h3>SQL Window Functions</h3>
+                <p style="margin: 10px 0">
+                  Example query using RANK() and LAG():
+                </p>
+                <pre
+                  style="
+                    background: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 0.9em;
+                    overflow-x: auto;
+                  "
+                >
+SELECT offender_id, risk_score,
+       RANK() OVER (ORDER BY risk_score DESC) as rank,
+       LAG(risk_score) OVER (ORDER BY created_date) as prev_score
+FROM offenders
+WHERE status = 'ACTIVE';</pre
+                >
+              </div>
+
+              <div
+                style="background: #f8f9fa; padding: 20px; border-radius: 10px"
+              >
+                <h3>Aggregation Queries</h3>
+                <p style="margin: 10px 0">Example GROUP BY query:</p>
+                <pre
+                  style="
+                    background: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 0.9em;
+                    overflow-x: auto;
+                  "
+                >
+SELECT CASE 
+         WHEN risk_score < 0.3 THEN 'Low'
+         WHEN risk_score < 0.7 THEN 'Medium'
+         ELSE 'High'
+       END as risk_level,
+       COUNT(*) as count,
+       AVG(risk_score) as avg_score
+FROM offenders
+GROUP BY CASE 
+         WHEN risk_score < 0.3 THEN 'Low'
+         WHEN risk_score < 0.7 THEN 'Medium'
+         ELSE 'High'
+       END;</pre
+                >
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px">Sample Report Output</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Month</th>
+                  <th>New Offenders</th>
+                  <th>Avg Risk Score</th>
+                  <th>High Risk %</th>
+                  <th>Early Releases</th>
+                  <th>Recidivism Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Nov 2025</td>
+                  <td>15</td>
+                  <td class="risk-medium">0.52</td>
+                  <td class="risk-medium">18.2%</td>
+                  <td class="risk-low">4</td>
+                  <td class="risk-low">12.5%</td>
+                </tr>
+                <tr>
+                  <td>Oct 2025</td>
+                  <td>18</td>
+                  <td class="risk-high">0.61</td>
+                  <td class="risk-high">22.5%</td>
+                  <td class="risk-medium">3</td>
+                  <td class="risk-medium">15.8%</td>
+                </tr>
+                <tr>
+                  <td>Sep 2025</td>
+                  <td>12</td>
+                  <td class="risk-low">0.48</td>
+                  <td class="risk-low">14.3%</td>
+                  <td class="risk-high">5</td>
+                  <td class="risk-low">11.1%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Add Offender Tab -->
+          <div class="tab-content" id="add-tab">
+            <h2 class="section-title">
+              <span>Add New Offender</span>
+              <span style="font-size: 0.9em; color: #666"
+                >Simulates PL/SQL add_offender() procedure</span
+              >
+            </h2>
+
+            <form
+              id="addOffenderForm"
+              style="max-width: 600px; margin-top: 20px"
+            >
+              <div class="form-group">
+                <label for="nationalId">National ID *</label>
+                <input
+                  type="text"
+                  id="nationalId"
+                  class="form-control"
+                  placeholder="119988001999"
+                  required
+                />
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
+              >
+                <div class="form-group">
+                  <label for="firstName">First Name *</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    class="form-control"
+                    placeholder="John"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="lastName">Last Name *</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    class="form-control"
+                    placeholder="Doe"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px"
+              >
+                <div class="form-group">
+                  <label for="gender">Gender *</label>
+                  <select id="gender" class="form-control" required>
+                    <option value="">Select Gender</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="riskScore">Risk Score (0-1) *</label>
+                  <input
+                    type="number"
+                    id="riskScore"
+                    class="form-control"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    placeholder="0.45"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input
+                  type="text"
+                  id="address"
+                  class="form-control"
+                  placeholder="Kigali, Rwanda"
+                />
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                onclick="simulateAddOffender()"
+                style="margin-top: 10px"
+              >
+                <i class="fas fa-database"></i> Execute PL/SQL Procedure
+              </button>
+            </form>
+
+            <div
+              class="alert alert-success"
+              id="addResult"
+              style="display: none; margin-top: 20px"
+            >
+              <strong
+                ><i class="fas fa-check-circle"></i> PL/SQL Procedure Executed
+                Successfully!</strong
+              >
+              <div id="addResultDetails" style="margin-top: 10px"></div>
+            </div>
+          </div>
+
+          <!-- Alerts Tab -->
+          <div class="tab-content" id="alerts-tab">
+            <h2 class="section-title">
+              <span>System Alerts & Triggers</span>
+              <button class="btn btn-danger" onclick="testAlertTrigger()">
+                <i class="fas fa-bolt"></i> Test Trigger
+              </button>
+            </h2>
+
+            <div class="alert alert-info">
+              <strong
+                ><i class="fas fa-info-circle"></i> Database Triggers:</strong
+              >
+              These alerts are generated automatically by PL/SQL triggers.
+            </div>
+
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Alert ID</th>
+                  <th>Time</th>
+                  <th>Offender</th>
+                  <th>Trigger Type</th>
+                  <th>Description</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="alertsTable">
+                <!-- Filled by JavaScript -->
+              </tbody>
+            </table>
+
+            <div
+              style="
+                margin-top: 30px;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 10px;
+              "
+            >
+              <h3>Trigger Examples in PL/SQL</h3>
+              <pre
+                style="
+                  background: white;
+                  padding: 15px;
+                  border-radius: 8px;
+                  font-size: 0.9em;
+                  overflow-x: auto;
+                  margin-top: 15px;
+                "
+              >
+-- Example: High Risk Alert Trigger
+CREATE OR REPLACE TRIGGER trg_offender_risk_alert
+AFTER UPDATE OF risk_score ON offenders
+FOR EACH ROW
+WHEN (NEW.risk_score > 0.7)
+BEGIN
+    INSERT INTO alerts (alert_id, offender_id, alert_type, description)
+    VALUES (seq_alerts.NEXTVAL, :NEW.offender_id, 
+            'HIGH_RISK', 'Risk score: ' || :NEW.risk_score);
+END;</pre
+              >
+            </div>
+          </div>
+
+          <!-- Database Info Tab -->
+          <div class="tab-content" id="database-tab">
+            <h2 class="section-title">
+              <span>Database Information</span>
+              <button class="btn btn-primary" onclick="showPDBInfo()">
+                <i class="fas fa-server"></i> Show PDB Info
+              </button>
+            </h2>
+
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+                margin-top: 20px;
+              "
+            >
+              <div
+                style="background: #f8f9fa; padding: 20px; border-radius: 10px"
+              >
+                <h3>PDB Configuration</h3>
+                <p style="margin: 15px 0">
+                  <strong>PDB Name:</strong> D_28235_Ruth_SecureRehab_DB
+                </p>
+                <p style="margin: 15px 0">
+                  <strong>Connection:</strong>
+                  SecureRehab_Admin/Ruth@localhost/D_28235_Ruth_SecureRehab_DB
+                </p>
+                <p style="margin: 15px 0"><strong>Tables:</strong> 6</p>
+                <p style="margin: 15px 0">
+                  <strong>PL/SQL Objects:</strong> 15+
+                </p>
+              </div>
+
+              <div
+                style="background: #f8f9fa; padding: 20px; border-radius: 10px"
+              >
+                <h3>Database Objects</h3>
+                <ul style="list-style: none; margin-top: 15px">
+                  <li style="margin-bottom: 10px">
+                    <i class="fas fa-table"></i> Tables: 6
+                  </li>
+                  <li style="margin-bottom: 10px">
+                    <i class="fas fa-code"></i> Procedures: 5
+                  </li>
+                  <li style="margin-bottom: 10px">
+                    <i class="fas fa-function"></i> Functions: 6
+                  </li>
+                  <li style="margin-bottom: 10px">
+                    <i class="fas fa-bolt"></i> Triggers: 5
+                  </li>
+                  <li style="margin-bottom: 10px">
+                    <i class="fas fa-eye"></i> Views: 1
+                  </li>
+                  <li><i class="fas fa-list-ol"></i> Sequences: 6</li>
+                </ul>
+              </div>
+            </div>
+
+            <h3 style="margin-top: 30px">Sample PL/SQL Code</h3>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-top: 15px;
+              "
+            >
+              <div>
+                <h4>Cursor Procedure</h4>
+                <pre
+                  style="
+                    background: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 0.85em;
+                    overflow-x: auto;
+                  "
+                >
+CREATE OR REPLACE PROCEDURE generate_risk_review_report IS
+    CURSOR offender_cursor IS
+        SELECT offender_id, name, risk_score
+        FROM offenders WHERE status = 'ACTIVE';
+BEGIN
+    FOR rec IN offender_cursor LOOP
+        -- Process each offender
+        DBMS_OUTPUT.PUT_LINE(rec.name || ': ' || rec.risk_score);
+    END LOOP;
+END;</pre
+                >
+              </div>
+
+              <div>
+                <h4>Function with Validation</h4>
+                <pre
+                  style="
+                    background: white;
+                    padding: 15px;
+                    border-radius: 8px;
+                    font-size: 0.85em;
+                    overflow-x: auto;
+                  "
+                >
+CREATE OR REPLACE FUNCTION calculate_risk_score(
+    p_offender_id IN NUMBER
+) RETURN NUMBER IS
+    v_score NUMBER;
+BEGIN
+    -- Calculate risk based on offenses, behavior
+    SELECT formula INTO v_score FROM risk_calc_view
+    WHERE offender_id = p_offender_id;
+    
+    RETURN v_score;
+END;</pre
+                >
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>
+          SecureRehab: Security-Focused Criminal Rehabilitation & Jail Overload
+          Prevention System
+        </p>
+        <p>© 2025 Umwizerwa Ruth (28235) - PL/SQL Practicum Project - AUCA</p>
+        <p style="margin-top: 10px; font-size: 0.85em">
+          <i class="fas fa-database"></i> Oracle PL/SQL |
+          <i class="fas fa-code"></i> HTML/CSS/JS |
+          <i class="fas fa-github"></i> GitHub:
+          Thurs_28235_SecureRehab_PLSQL_Capstone
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // Navigation
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const tab = this.getAttribute("data-tab");
+          showTab(tab);
+        });
+      });
+
+      function showTab(tabName) {
+        // Update navigation
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("data-tab") === tabName) {
+            link.classList.add("active");
+          }
+        });
+
+        // Show tab content
+        document.querySelectorAll(".tab-content").forEach((content) => {
+          content.classList.remove("active");
+        });
+        document.getElementById(tabName + "-tab").classList.add("active");
+      }
+
+      // Sample data
+      const offenders = [
+        {
+          id: 1001,
+          name: "John Doe",
+          risk: 0.28,
+          status: "ACTIVE",
+          programs: 2,
+          eligibility: "HIGHLY_ELIGIBLE",
+        },
+        {
+          id: 1002,
+          name: "Jane Smith",
+          risk: 0.72,
+          status: "ACTIVE",
+          programs: 1,
+          eligibility: "NOT_ELIGIBLE",
+        },
+        {
+          id: 1003,
+          name: "Bob Johnson",
+          risk: 0.31,
+          status: "ACTIVE",
+          programs: 3,
+          eligibility: "ELIGIBLE",
+        },
+        {
+          id: 1004,
+          name: "Alice Brown",
+          risk: 0.85,
+          status: "ACTIVE",
+          programs: 1,
+          eligibility: "NOT_ELIGIBLE",
+        },
+        {
+          id: 1005,
+          name: "Charlie Wilson",
+          risk: 0.45,
+          status: "ACTIVE",
+          programs: 2,
+          eligibility: "CONDITIONAL",
+        },
+      ];
+
+      const alerts = [
+        {
+          id: 5001,
+          time: "2 hours ago",
+          offender: "Alice Brown (1004)",
+          type: "HIGH_RISK",
+          description: "Risk score increased to 0.85",
+          status: "ACTIVE",
+        },
+        {
+          id: 5002,
+          time: "1 day ago",
+          offender: "Jane Smith (1002)",
+          type: "PROGRAM_DROPOUT",
+          description: "Dropped out of Anger Management",
+          status: "RESOLVED",
+        },
+        {
+          id: 5003,
+          time: "3 days ago",
+          offender: "John Doe (1001)",
+          type: "RISK_IMPROVED",
+          description: "Risk score decreased to 0.28",
+          status: "ACKNOWLEDGED",
+        },
+      ];
+
+      // Initialize tables
+      function initTables() {
+        const offendersTable = document.getElementById("offendersTable");
+        offendersTable.innerHTML = "";
+
+        offenders.forEach((offender) => {
+          const riskClass =
+            offender.risk < 0.3
+              ? "risk-low"
+              : offender.risk < 0.7
+              ? "risk-medium"
+              : "risk-high";
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${offender.id}</td>
+                    <td><strong>${offender.name}</strong></td>
+                    <td class="${riskClass}">${offender.risk}</td>
+                    <td><span class="status-badge status-active">${offender.status}</span></td>
+                    <td>${offender.programs} programs</td>
+                    <td>${offender.eligibility}</td>
+                    <td>
+                        <button class="btn" style="padding: 5px 10px; font-size: 0.85em;" onclick="viewOffender(${offender.id})">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                `;
+          offendersTable.appendChild(row);
+        });
+
+        const alertsTable = document.getElementById("alertsTable");
+        alertsTable.innerHTML = "";
+
+        alerts.forEach((alert) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${alert.id}</td>
+                    <td>${alert.time}</td>
+                    <td>${alert.offender}</td>
+                    <td><span class="status-badge" style="background: #ffebee; color: var(--danger);">${alert.type}</span></td>
+                    <td>${alert.description}</td>
+                    <td>${alert.status}</td>
+                `;
+          alertsTable.appendChild(row);
+        });
+      }
+
+      // Demo functions
+      function runDemoProcedure() {
+        alert(
+          "Simulating PL/SQL Procedure Execution\n\nThis would call procedures like:\n- calculate_risk_score()\n- check_early_release_eligibility()\n- generate_risk_review_report()\n\nCheck the 'Reports' tab for analytics output."
+        );
+        showTab("reports");
+      }
+
+      function runRiskReviewReport() {
+        const alertDiv = document.getElementById("cursorAlert");
+        const resultDiv = document.getElementById("cursorResult");
+
+        resultDiv.textContent =
+          "Processed 150 offenders, updated 23 risk scores, generated 5 alerts";
+        alertDiv.style.display = "block";
+
+        // Scroll to result
+        setTimeout(() => alertDiv.scrollIntoView({ behavior: "smooth" }), 100);
+
+        alert(
+          "✅ Cursor Procedure Executed: generate_risk_review_report()\n\nThis PL/SQL procedure uses a cursor to loop through all offenders and update their risk scores."
+        );
+      }
+
+      function testEnrollmentProcedure() {
+        const programs = [
+          { id: 101, name: "Vocational Training", result: "SUCCESS" },
+          {
+            id: 102,
+            name: "Anger Management",
+            result: "FAILED - Program Full",
+          },
+          { id: 103, name: "Adult Literacy", result: "SUCCESS" },
+        ];
+
+        const randomProgram =
+          programs[Math.floor(Math.random() * programs.length)];
+
+        alert(
+          `Testing PL/SQL Procedure: enroll_in_program(1001, ${
+            randomProgram.id
+          })\n\nResult: ${randomProgram.result}\n\n${
+            randomProgram.result.includes("FAILED")
+              ? "Trigger prevented enrollment due to capacity constraint."
+              : "Procedure executed successfully."
+          }`
+        );
+      }
+
+      function generateAnalyticsReport() {
+        alert(
+          "Generating Analytics Report\n\nRunning SQL queries with:\n- Window functions (RANK, LAG, LEAD)\n- Aggregations (COUNT, AVG, SUM)\n- GROUP BY with CASE statements\n- Subqueries and joins\n\nReport generated and saved to database."
+        );
+      }
+
+      function simulateAddOffender() {
+        const nationalId = document.getElementById("nationalId").value;
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const gender = document.getElementById("gender").value;
+        const riskScore = parseFloat(
+          document.getElementById("riskScore").value
+        );
+        const address = document.getElementById("address").value;
+
+        // Validation
+        if (
+          !nationalId ||
+          !firstName ||
+          !lastName ||
+          !gender ||
+          isNaN(riskScore)
+        ) {
+          alert("Please fill all required fields with valid values!");
+          return;
+        }
+
+        if (riskScore < 0 || riskScore > 1) {
+          alert("Risk score must be between 0 and 1!");
+          return;
+        }
+
+        // Simulate PL/SQL procedure
+        const newId = Math.floor(Math.random() * 9000) + 2000;
+
+        const resultDiv = document.getElementById("addResult");
+        const detailsDiv = document.getElementById("addResultDetails");
+
+        detailsDiv.innerHTML = `
+                <strong>New Offender Created:</strong><br>
+                ID: ${newId}<br>
+                Name: ${firstName} ${lastName}<br>
+                National ID: ${nationalId}<br>
+                Gender: ${gender}<br>
+                Risk Score: ${riskScore}<br>
+                Address: ${address || "Not specified"}<br><br>
+                <em>PL/SQL Procedure Steps:</em><br>
+                1. Validated input parameters<br>
+                2. Checked for duplicate national ID<br>
+                3. Generated sequence: seq_offenders.NEXTVAL<br>
+                4. Inserted into offenders table<br>
+                5. Committed transaction<br>
+                6. Returned offender_id: ${newId}
+            `;
+
+        resultDiv.style.display = "block";
+
+        // Reset form
+        document.getElementById("addOffenderForm").reset();
+
+        alert(
+          `✅ PL/SQL Procedure Executed: add_offender()\n\nNew offender created with ID: ${newId}\nThe procedure performed data validation, sequence generation, and transaction management.`
+        );
+      }
+
+      function testAlertTrigger() {
+        alert(
+          "Testing Database Trigger: trg_offender_risk_alert\n\nSimulating: UPDATE offenders SET risk_score = 0.88 WHERE offender_id = 1002\n\nTrigger will automatically create an alert because risk_score > 0.7"
+        );
+
+        // Add new alert to table
+        const newAlert = {
+          id: 5000 + Math.floor(Math.random() * 1000),
+          time: "Just now",
+          offender: "Test Offender (9999)",
+          type: "TRIGGER_TEST",
+          description: "Test trigger executed successfully",
+          status: "ACTIVE",
+        };
+
+        alerts.unshift(newAlert);
+        initTables();
+        showTab("alerts");
+      }
+
+      function showPDBInfo() {
+        alert(
+          "PDB Connection Information:\n\nPDB Name: D_28235_Ruth_SecureRehab_DB\nConnection String: SecureRehab_Admin/Ruth@localhost/D_28235_Ruth_SecureRehab_DB\n\nTo verify PDB: SHOW CON_NAME\nTo list PDBs: SHOW PDBS"
+        );
+      }
+
+      function viewOffender(id) {
+        const offender = offenders.find((o) => o.id === id);
+        if (offender) {
+          alert(
+            `Offender Details:\n\nID: ${offender.id}\nName: ${offender.name}\nRisk Score: ${offender.risk}\nStatus: ${offender.status}\nPrograms: ${offender.programs}\nEligibility: ${offender.eligibility}\n\nPL/SQL functions available:\n- calculate_risk_score(${id})\n- check_early_release_eligibility(${id})`
+          );
+        }
+      }
+
+      // Initialize on load
+      document.addEventListener("DOMContentLoaded", function () {
+        initTables();
+        // Show demo alert
+        setTimeout(() => {
+          document.getElementById("demoAlert").style.display = "block";
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
