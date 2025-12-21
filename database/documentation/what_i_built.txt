@@ -1,0 +1,30 @@
+WHAT I BUILT FOR SECUREREHAB:
+
+1. TABLES (6 tables):
+   - offenders - stores offender information
+   - offenses - stores crimes committed
+   - sentences - stores prison sentences
+   - rehab_programs - stores rehabilitation programs
+   - program_participation - tracks who is in which program
+   - alerts - stores system warnings
+
+2. PROCEDURES (5 procedures):
+   - add_offender() - adds new offender
+   - enroll_in_program() - enrolls offender in program
+   - generate_risk_review_report() - uses CURSOR to check all offenders
+   - [Your other procedures]
+
+3. FUNCTIONS (4 functions):
+   - calculate_risk_score() - calculates risk number
+   - check_early_release_eligibility() - checks if can be released early
+   - [Your other functions]
+
+4. CURSOR (1 cursor):
+   - Inside generate_risk_review_report procedure
+   - Loops through all offenders one by one
+   - Updates their risk scores
+
+5. TRIGGERS (3 triggers):
+   - Automatically creates alerts
+   - Validates data
+   - Updates timestamps

@@ -1,0 +1,26 @@
+
+# PDB CONFIGURATION FOR SECUREREHAB
+
+MY PDB NAME: D_28235_Ruth_SecureRehab_DB
+
+HOW I CONNECT:
+sqlplus SecureRehab_Admin/Ruth@localhost/D_28235_Ruth_SecureRehab_DB
+
+PROOF IT'S A PDB:
+1. I connect using @localhost/PDB_NAME
+2. When I type "SHOW CON_NAME" it shows my PDB name
+3. It's not the root container (CDB$ROOT)
+
+CREATION SCRIPT I USED:
+-- I created this PDB in Oracle
+-- Name: D_28235_Ruth_SecureRehab_DB
+-- Admin user: SecureRehab_Admin
+-
+
+TABLES I CREATED INSIDE:
+1. offenders
+2. offenses  
+3. sentences
+4. rehab_programs
+5. program_participation
+6. alerts
