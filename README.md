@@ -57,3 +57,14 @@ Rwandan prisons face severe overcrowding and lack real-time offender progress mo
 **Student:** Umwizerwa Ruth  
 **Email:** ruthumwizerwa@gmail.com
 **GitHub:**https://github.com/Umwizer/SecureRehab_PLSQL_Capstone.git
+
+<!-- SQL> show con_name
+
+CON_NAME
+------------------------------
+D_28235_RUTH_SECUREREHAB_DB
+SQL> select name from v$pdbs;
+
+NAME
+----------------------------------------------------------------------------------------------------
+D_28235_RUTH_SECUREREHAB_DB -->

@@ -6,3 +6,5 @@
 
 # Compiled Pre-Linked Libraries
 *.plx
+
+sqlplus SecureRehab_Admin/Ruth@localhost/D_28235_Ruth_SecureRehab_DB
